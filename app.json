@@ -1,0 +1,6 @@
+{
+  "name": "Node.js Sample",
+  "description": "A Node.js app using Express 4"
+  "repository": "https://github.com/vashi9/node-js-app/new/master"
+  "keywords" : ["node" , "express" , "static" ]
+ } 
