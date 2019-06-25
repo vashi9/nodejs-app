@@ -53,7 +53,7 @@ pipeline {
 }
 def runApp(containerName, tag, dockerHubUser, httpPort){
                 sh "docker pull $dockerHubUser/$containerName"
-                sh "docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
+                sh "docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName"
                 echo "Application started on port: ${httpPort} (http)"
     }
 
