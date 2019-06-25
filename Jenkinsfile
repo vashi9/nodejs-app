@@ -1,5 +1,4 @@
 def CONTAINER_NAME="node-js-app"
-def CONTAINER_TAG="latest"
 def DOCKER_HUB_USER="vashi9"
 def HTTP_PORT="5002"
 pipeline {
