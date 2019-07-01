@@ -1,9 +1,10 @@
 def CONTAINER_NAME="node-js-app"
 def DOCKER_HUB_USER="vashi9"
+def CONTAINER_TAG="latest"
 def HTTP_PORT="5002"
 pipeline {
   environment {
-    registry = "vashi9/node-js-app"
+    registry = "vashi9/ci-cd"
     registryCredential = 'dockerhub'
     dockerImage = ''
     
@@ -12,13 +13,13 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/vashi9/nodejs-app.git'
+        git 'https://github.com/vashi9/node-js-app.git'
       }
     }
     stage('Building image') {
       steps{
         script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
+          dockerImage = docker.build registry
         }
       }
     }
@@ -31,7 +32,7 @@ pipeline {
         }
       }
     }
-    stage('Run Image'){
+   stage('Run Image'){
         steps{
             script{
                 runApp(CONTAINER_NAME, CONTAINER_TAG, DOCKER_HUB_USER, HTTP_PORT)
@@ -39,20 +40,11 @@ pipeline {
             }
         }
     }
-    stage('Remove Unused docker image') {
-      steps{
-        sh "docker rmi $registry:$BUILD_NUMBER"
-      }
-    }
-   
-    
     
   }
-   
 }
 def runApp(containerName, tag, dockerHubUser, httpPort){
-                sh "docker pull $dockerHubUser/$containerName"
-                sh "docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/dockerImage"
-                echo "Application started on port: ${httpPort} (http)"
-    }
-
+    sh "docker pull $dockerHubUser/$containerName"
+    sh "docker run -d --rm -p $httpPort:$httpPort --name $containerName $dockerHubUser/$containerName:$tag"
+    echo "Application started on port: ${httpPort} (http)"
+}
